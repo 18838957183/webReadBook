@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<meta name="format-detection" content="telephone=no">
+	<link href="panda.ico" rel="shortcut icon" />
+	<link rel="stylesheet" href="css/reset.css" />
+	<title>WebApp电子书阅读器</title>
+	<link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
+	<style type="text/css">
+		
+		html{
+			width: 100%;
+			height: 100%;
+			overflow-x: hidden;
+		}
+		body{
+			background:#E9DFC7;
+			text-align: left;
+			width: 100%;
+			overflow: hidden;
+		}
+		
+		body.sun{
+			background: black;
+		}
+		.m-read-content{
+			font-size: 15px;
+			color:#555555;
+			line-height: 30px;
+			padding: 15px;
+		}
+		.m-read-content h4{
+			font-size: 20px;
+			color: #736357;
+			border-bottom: 1px solid #736357;
+			letter-spacing: 2px;
+			margin: 0 0 1em 0;
+		}
+		.m-read-content p{
+			text-indent:2em;
+			margin: 0.5em 0;
+			letter-spacing: 0px;
+		}
+		.u-tab{
+			height: 34px;
+			margin: 10px auto;
+			border: 1px solid #858352;
+			background:#000;
+			color: white;
+			border-radius: 10px;
+			opacity: 0.8;
+			font-size: 12px;
+		}
+		.u-tab li{
+			display: inline-block;
+			width: 49%;
+			font-size: 20px;
+			text-align: center;
+			line-height:30px;
+			border-right: 1px solid white;
+		}
+		.u-tab li:nth-child(2){
+			border-right: none;
+		}
+		.button-bar{
+			width: 70%;
+			margin: 0 auto;
+			padding: 10px;
+			max-width: 800px;
+		}
+		.top-nav{
+			position:fixed;
+			width: 100%;
+			height: 50px;
+			top: 0;
+			background: black;
+			opacity: 0.8;
+			z-index: 1;
+		}
+		.icon-black{
+			position: absolute;
+			height: 20px;
+			width: 20px;
+			top: 14px;
+			left: 10px;
+			
+			color: white;
+		}
+		.nav-title{
+			position: absolute;
+			top: 16px;
+			left:15px;
+			color: white;
+			font-size:16px;
+		}
+		.bottom-nav{
+			position:fixed;
+			width: 100%;
+			height:70px;
+			bottom: 0;
+			background: black;
+			opacity: 0.9;
+			z-index:99;
+			color: white;
+			display: flex;
+			justify-content: space-between;
+			text-align: center;
+			align-items: center;
+		}
+		.there.sky{
+			background: url(img/sun.png)no-repeat center center;
+			background-size: contain;
+		}
+		.one{
+			flex: 1;
+		}
+		.two{
+			flex: 1;
+		}
+		.there{
+			flex: 1;
+		}
+		.nav-pannel-bk{
+			position: fixed;
+			background: #000000;
+			height:130px;
+			opacity: 0.9;
+			bottom:69px;
+			width:100%;
+			z-index: 100;
+		}
+		.nav-pannel{
+			position: fixed;
+			bottom: 70px;
+			background: none;
+			color: white;
+			height:135px;
+			width: 100%;
+			z-index: 101;
+		}
+		.child-mod{
+		/*	font-size: 20px;*/
+			padding: 5px 10px;
+			margin: 15px;
+		}
+		.child-mod span{
+			padding-right:20px;
+		}
+		.font-size-button{
+			padding: 4px 40px;
+			border: 1px solid #8c8c8c;
+			border-radius:16px;
+			background: none;
+			color: white;
+			outline: none;
+		}
+		.child-mod button:nth-child(2){
+			margin-right:10px;
+		}
+		/*.child-mod span:nth-child(2){
+			margin-bottom: 10px;
+		}*/
+		/*.bk-container{
+			position: relative;
+			width:30px;
+			height: 30px;
+			border-radius: 15px;
+			background: #fff;
+			display: inline-block;
+		}*/
+		/*.bk-container-current{
+			position: absolute;
+			width: 32px;
+			height: 32px;
+			border-radius:16px;
+			display: inline-block;
+			top: -2px;
+			left: -2px;
+		}	*/
+		.bg{
+			    height: 50px;
+    			line-height: 50px;
+		}
+		.bg>span:nth-of-type(2){
+			display: inline-block;
+			vertical-align: middle;
+		}
+		.bk-container-current{
+			background: pink;
+			width: 10px;
+			height:30px;
+			border: 1px solid white;
+			border-radius:25px;
+			margin-right: 5px;
+		}
+		.bk-container-one{
+			background:skyblue;
+			width: 11px;
+			height: 30px;
+			border: 1px solid white;
+			border-radius:25px;
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 5px;
+		}
+		.bk-container-two{
+			background:white;
+			width: 11px;
+			height: 30px;
+			border: 1px solid white;
+			border-radius:25px;
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 5px;
+		}
+		.bk-container-there{
+			background:wheat;
+			width: 11px;
+			height: 30px;
+			border: 1px solid white;
+			border-radius:25px;
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 5px;
+		}
+		.bk-container-four{
+			background:black;
+			width: 12px;
+			height: 32px;
+			border: 1px solid white;
+			border-radius:25px;
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 5px;
+		}
+		.artical-action-mid{
+			position: fixed;
+			width: 100%;
+			z-index:102;
+			height:50%;
+			top:15%;
+		}
+		.ono{
+			color: yellow;
+		}
+		.on{
+			color: yellow;
+		}
+		.cur{
+			color: black;
+		}
+		.border{
+			border: 2px solid red;
+		}
+		.biji{
+			position: fixed;
+			width:80%;
+			top:40%;
+			left:8%;
+			background: black;
+			opacity: 0.9;
+			color: white;
+			border-radius: 15px;
+			z-index: 1111;
+		}
+		.append{
+			border: 1px solid white;
+			margin: 10px 10px;
+			width: 80px;
+			height:30px;
+			text-align: center;
+			line-height: 30px;
+		}
+		.message{
+			position: fixed;
+			width: 100%;
+			height:100%;
+			background: white;
+			z-index: 1112;
+		}
+		.dibu{
+			background:#E9E9E9;	
+			width: 100%;
+			height:70px;
+			text-align:center;
+			padding-top: 20px;
+		}
+		.dibu button{
+			width:120px;
+			height:35px;
+			color:black;
+			background:white;
+			border-radius: 20px;
+			outline: none;
+		}
+		.dibu button:nth-child(2){
+			background: deepskyblue;
+			color: white;
+			
+		}
+	</style>
+	<script type="text/javascript">
+		
+	</script>
+</head> 
+<body>
+	<div id="root" class="container">	
+	<div class="m-artical-action">
+		<div class="artical-action-mid" id="action_mid"></div>
+	</div>
+	<div class="biji" style="display: none;">
+		<div class="append">添加批注</div>
+	</div>
+	<!--弹出做笔记的弹框-->
+	<div class="message" style="display: none;">
+		<p class=' iconfont icon-fanhuijian'  style="padding: 10px 10px; font-size: 16px;background: #E9E9E9;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;笔记</p>
+		<p style="color:#333333; padding:10px 10px;">原文： 那极品美女叫阿楚，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，</p>
+		<textarea placeholder="请输入您想说的话" rows="10" cols="30" style="width:90%;height:61%;margin: 12px 12px; box-sizing: border-box;" ></textarea>
+		<div class="dibu">
+				<button class="quxiao">取消</button>
+				<button class="baocun">保存</button>
+		</div>
+	</div>
+	<div class="top-nav" id="top-nav" style="display: none;">
+		<div class="icon-black"></div>
+		<div class="nav-title iconfont icon-fanhuijian">&nbsp;&nbsp;&nbsp;<a href='http://wap.ikanshu.cn/bookfree.aspx' style="color: white;">返回书架</a></div>
+	</div>
+	
+	<div class="bottom-nav" style="display: none;">
+		<div class="one iconfont icon-mulu">目录</div>
+		<div class="two"><i class="iconfont icon-ziti"></i>字体</div>
+		<div class="there"><i class="iconfont icon-2qingyewan"></i>夜间</div>
+	</div>
+	
+	<div id="fiction_title"></div>
+	<div id="fiction_container" class="m-read-content">
+		<h4>第003章 楚乔传</h4>
+		<p title="好文章写得不错 建议观看"> 那极品美女叫阿楚，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+			那极品美女叫阮清霜，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+			那极品美女叫阮清霜，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+		</p>
+		<p title="好文章写得不错 建议观看"> 那极品美女叫阮清霜，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+			那极品美女叫阮清霜，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+			那极品美女叫阮清霜，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+		</p>
+		<p title="好文章写得不错 建议观看"> 那极品美女叫阮清霜，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+			那极品美女叫阮清霜，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+			那极品美女叫阮清霜，开了间药膳馆，平时靠着经营药膳为生，而她有一个小叔子，就是生得贼眉鼠眼的青年吕宝，嗜赌如命，经常输光了钱就跑阮清霜这里来索要，苦求无果就以将阮清霜的下落告诉乡下哥哥来威胁，并且屡屡得手。
+		</p>
+	</div>
+	<div class="button-bar">
+		<ul class="u-tab">
+			<li id="prev-button">上一章</li>
+			<li id="next-button">下一章</li>
+		</ul>		
+	</div>
+	<div class="nav-pannel-bk" style="display: none;"></div>
+	<div class="nav-pannel" id="font-container" style="display: none;">
+		<div class="child-mod">
+			<span>字号</span>
+			<button id="large-font" class="font-size-button">大</button>
+			<button id="small-font" class="font-size-button">小</button>
+		</div>	
+		<div class="child-mod bg">
+			<span>背景</span>
+			<span class="bk-container-current"></span>
+			<span class="bk-container-one"></span>
+			<span class="bk-container-two"></span>
+			<span class="bk-container-there"></span>
+			<span class="bk-container-four"></span>
+		</div>
+	</div>
+</div>
+	<script src="js/zepto.min.js"></script>
+	<script>
+		window.jQuery = $;
+	</script>
+	<script src="js/jquery.base64.js"></script>
+	<script src="js/jquery.jsonp.js"></script>
+	<script type="text/javascript">
+		var bmw = document.querySelector('.child-mod.bg');
+		var url = '';
+		var Dom = {
+			top_nav:$('#top-nav'),
+			bottom_nav:$('.bottom-nav'),
+		}
+		
+		var Bom ={
+			nav_pannel_bk:$('.nav-pannel-bk'),
+			nav_pannel:$('.nav-pannel'),
+			two_i:$('.two i'),
+			there_i:$('.there i'),
+			biji:$('.biji'),
+			append:$('.append'),
+		}
+		var Win = $(window);
+		var Doc = $(document);
+		var initFontSize = 14;
+		var RootContainer = $('#fiction_container');
+		
+	//项目刷新后自动获取locastorage里面的字体大小，如果没有就恢复默认设置
+		if(localStorage.getItem('fontsize') != null){
+			initFontSize = localStorage.getItem('fontsize');
+			RootContainer.css('fontSize',initFontSize+'px');
+		}
+	
+//	function ReaderModel(){
+		//实现阅读器的相关数据交互
+		//获取章节列表的信息
+		var init = function(UIcallback){
+			getFictionInfo(function(){
+				getContent(Chapter_id,function(data){
+					UIcallback&&UIcallback(data);
+				});
+			});
+		}
+		var Chapter_id = 1;
+
+//		//获取章节的方法
+		var getContent = function(){
+			$.get('data/data'+Chapter_id+'.json',function(data){
+				console.log(data)
+				if(data.result == 0){
+					url = data.jsonp;
+				}
+			},'json');
+		}
+		getContent();
+//} 	
+	//点击下一章
+		$("#next-button").click(function(){
+			$.jsonp({
+				url : url,
+				cache : true,
+				callback:"duokan_fiction_chapter",
+				success : function(data){
+					var data = $.base64.decode(data);
+					var json = decodeURIComponent(escape(data));
+					var title = JSON.parse(json).t;
+					var html = '<h4>'+title+'</h4>';
+					for(var i = 0;i<JSON.parse(json).p.length;i++){
+						html+='<p>'+JSON.parse(json).p[i]+'</p>';
+					}
+					$("body,html").scrollTop(0);
+					$("#fiction_container").html(html);
+					Chapter_id++;
+					if(Chapter_id>=5){
+						alert('已经看至最后一章未完待续,');
+						return;
+					}
+					getContent();
+//					callback(json);
+				}
+			})
+		})
+		//点击上一章
+		$("#prev-button").click(function(){
+			$.jsonp({
+				url : url,
+				cache : true,
+				callback:"duokan_fiction_chapter",
+				success : function(data){
+					var data = $.base64.decode(data);
+					var json = decodeURIComponent(escape(data));
+					var title = JSON.parse(json).t;
+					var html = '<h4>'+title+'</h4>';
+					for(var i = 0;i<JSON.parse(json).p.length;i++){
+						html+='<p>'+JSON.parse(json).p[i]+'</p>';
+					}
+					$("#fiction_container").html(html);
+					
+					$("body,html").scrollTop(0);
+					$("#fiction_container").html(html);
+					Chapter_id--;
+					if(Chapter_id<1){
+						alert('已经是第一章了,');
+						return;
+					}
+
+					getContent();
+				}
+			})
+		})
+	function main(){
+		//整个项目的入口函数
+//		var readerModel = ReaderModel();
+//		var readerUI = ReaderBaseFrame(RootContainer);
+//		readerModel.init(function(data){
+//			readerUI(data);
+//		});
+		EventHanlder();
+	}
+	
+	function EventHanlder(){
+		$('#action_mid').click(function(){
+			console.info('OK');
+			if(Dom.top_nav.css('display')=='none'){
+				Dom.bottom_nav.show();
+				Dom.top_nav.show();
+				
+			}else{
+				Dom.bottom_nav.hide();
+				Dom.top_nav.hide();
+				Bom.nav_pannel_bk.hide();
+				Bom.nav_pannel.hide();
+				Bom.two_i.removeClass('on');
+				Bom.there_i.removeClass('ono');
+				Bom.biji.hide();
+			}
+		});
+		//点击后弹出 做笔记的弹窗
+		$('.append').click(function(){
+			$('.message').css('display','block');
+		});
+		
+		$(".two").click(function(){  //点击字体后弹出 二级菜单
+			if(Bom.nav_pannel_bk.css('display')=='none'){
+				Bom.nav_pannel_bk.show();
+				Bom.nav_pannel.show();
+				Bom.two_i.addClass('on');
+			}else{
+				Bom.nav_pannel_bk.hide();
+				Bom.nav_pannel.hide();
+				Bom.two_i.removeClass('on');
+			}
+		});
+		
+		$('.there').click(function(){  //点击夜间模式 后变为黑色背景
+			$('body').css('background','#333333');
+			$('.bk-container-four').addClass('border').siblings().removeClass('border');
+			if(Bom.nav_pannel_bk.css('color')=='yellow'){
+				Bom.there_i.removeClass('ono');
+			}else{
+				Bom.there_i.addClass('ono');
+			}
+		});
+		//点击加边框换背景颜色
+		$('.bk-container-current').click(function(){
+			$('body').css('background','pink');
+			$('.bk-container-current').addClass('border').siblings().removeClass('border');
+		});
+		$('.bk-container-one').click(function(){
+			$('body').css('background','skyblue');
+			$('.bk-container-one').addClass('border').siblings().removeClass('border');
+		});
+		$('.bk-container-two').click(function(){
+			$('body').css('background','white');
+			$('.bk-container-two').addClass('border').siblings().removeClass('border');
+		});	
+		$('.bk-container-there').click(function(){
+			$('body').css('background','wheat');
+			$('.bk-container-there').addClass('border').siblings().removeClass('border');
+		});
+		$('.bk-container-four').click(function(){
+			$('body').css('background','black');
+			$('.bk-container-four').addClass('border').siblings().removeClass('border');
+		});
+		
+		$('#large-font').click(function(){ //点击切换字体大小
+			if(initFontSize>20){
+				return;
+			}
+			+initFontSize++;
+			RootContainer.css('font-size',initFontSize);
+			//保存字体大小函数调用
+			localStorage.setItem("fontsize",initFontSize)
+			
+		});
+		$('#small-font').click(function(){
+			if(initFontSize<12){
+				return;
+			}
+			+initFontSize--;
+			RootContainer.css('font-size',initFontSize);
+			//保存字体大小函数调用
+			localStorage.setItem("fontsize",initFontSize)
+		});
+		$('.quxiao').click(function(){
+			$('.message').hide();
+			$('.biji').hide();
+		});
+		$('.baocun').click(function(){
+			$('.message').hide();
+			$('.biji').hide();
+		});
+		$('.message p').click(function(){
+			history.back();
+		});
+		//长按屏幕加笔记批注
+		var timeOutEvent=0;
+		$(function(){
+			$('#action_mid').on({
+				touchstart:function(e){
+					timeOutEvent = setTimeout('longPress()',1000);
+			
+				},
+				touchmove:function(){
+					clearTimeout(timeOutEvent);
+					timeOutEvent=0;
+				},
+				touchend:function(){
+					clearTimeout(timeOutEvent);
+					if(timeOutEvent!=0){
+	
+					}
+			
+				}
+			})
+		});
+	
+		//滚动事件 上下tab自己隐藏
+		Win.scroll(function(){  
+			Dom.bottom_nav.hide();
+			Dom.top_nav.hide();
+			Bom.nav_pannel_bk.hide();
+			Bom.nav_pannel.hide();
+			Bom.two_i.removeClass('on');
+			Bom.there_i.removeClass('ono');
+			Bom.biji.hide();
+		});
+	}
+	main();
+	
+		function longPress(){
+			timeOutEvent = 0;
+			if(Bom.biji.css('display')=='none'){
+				Bom.biji.show();
+			}else{
+				Bom.biji.hide();
+			}
+		}
+	</script> 
+</body>
+</html>
